@@ -1,29 +1,32 @@
+// Scroll Animation Engine
 const sr = ScrollReveal({
     origin: 'bottom',
     distance: '50px',
     duration: 1000,
-    delay: 200,
+    delay: 100,
     reset: false
 });
 
 sr.reveal('.hero-content, .section-title');
-sr.reveal('.about-text', { origin: 'left' });
-sr.reveal('.strengths-grid', { origin: 'right' });
-sr.reveal('.timeline-item', { interval: 200 });
-sr.reveal('.edu-card', { interval: 200 });
-sr.reveal('.project-box, .contact-card');
+sr.reveal('.about-text, .s-card', { interval: 200 });
+sr.reveal('.timeline-item', { interval: 300 });
+sr.reveal('.edu-card, .achieve-card', { interval: 200 });
 
-// Smooth Navigation Highlight
+// Active Link Highlighting
 window.addEventListener('scroll', () => {
-    let current = '';
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        if (pageYOffset >= (section.offsetTop - 150)) {
-            current = section.getAttribute('id');
+    let current = "";
+    const sections = document.querySelectorAll("section");
+    sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 150) {
+            current = section.getAttribute("id");
         }
     });
-    document.querySelectorAll('.nav-links a').forEach(a => {
-        a.classList.remove('active');
-        if (a.getAttribute('href').includes(current)) a.classList.add('active');
+
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href").includes(current)) {
+            link.classList.add("active");
+        }
     });
 });
