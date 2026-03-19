@@ -1,40 +1,29 @@
-// Initialize ScrollReveal
 const sr = ScrollReveal({
     origin: 'bottom',
-    distance: '60px',
-    duration: 1200,
+    distance: '50px',
+    duration: 1000,
     delay: 200,
     reset: false
 });
 
-sr.reveal('.hero-content');
-sr.reveal('.section-title');
+sr.reveal('.hero-content, .section-title');
 sr.reveal('.about-text', { origin: 'left' });
 sr.reveal('.strengths-grid', { origin: 'right' });
 sr.reveal('.timeline-item', { interval: 200 });
 sr.reveal('.edu-card', { interval: 200 });
-sr.reveal('.contact-card', { interval: 200 });
+sr.reveal('.project-box, .contact-card');
 
-// Active Navigation Highlight
-const navLinks = document.querySelectorAll('.nav-links a');
-const sections = document.querySelectorAll('section');
-
+// Smooth Navigation Highlight
 window.addEventListener('scroll', () => {
     let current = '';
+    const sections = document.querySelectorAll('section');
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+        if (pageYOffset >= (section.offsetTop - 150)) {
             current = section.getAttribute('id');
         }
     });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').includes(current)) {
-            link.classList.add('active');
-        }
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href').includes(current)) a.classList.add('active');
     });
 });
-
-// Hamburger menu toggle logic can be added here
