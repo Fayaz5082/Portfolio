@@ -1,38 +1,40 @@
-// Navigation active state on scroll
-const sections = document.querySelectorAll('section');
+// Initialize ScrollReveal
+const sr = ScrollReveal({
+    origin: 'bottom',
+    distance: '60px',
+    duration: 1200,
+    delay: 200,
+    reset: false
+});
+
+sr.reveal('.hero-content');
+sr.reveal('.section-title');
+sr.reveal('.about-text', { origin: 'left' });
+sr.reveal('.strengths-grid', { origin: 'right' });
+sr.reveal('.timeline-item', { interval: 200 });
+sr.reveal('.edu-card', { interval: 200 });
+sr.reveal('.contact-card', { interval: 200 });
+
+// Active Navigation Highlight
 const navLinks = document.querySelectorAll('.nav-links a');
+const sections = document.querySelectorAll('section');
 
-window.onscroll = () => {
-    sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
-
-        if(top >= offset && top < offset + height) {
-            navLinks.forEach(links => {
-                links.classList.remove('active');
-                document.querySelector('.nav-links a[href*=' + id + ']').classList.add('active');
-            });
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+            current = section.getAttribute('id');
         }
     });
-};
 
-// Scroll Reveal Animations
-ScrollReveal({
-    distance: '80px',
-    duration: 2000,
-    delay: 200
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
+        }
+    });
 });
 
-ScrollReveal().reveal('.hero-content, .section-title', { origin: 'top' });
-ScrollReveal().reveal('.about-card, .timeline-item, .project-card', { origin: 'bottom' });
-
-// Hamburger Menu Logic (Simplified)
-const hamburger = document.querySelector('.hamburger');
-const nav = document.querySelector('.nav-links');
-
-hamburger.addEventListener('click', () => {
-    nav.classList.toggle('active');
-    // Add CSS for .nav-links.active to show a mobile menu
-});
+// Hamburger menu toggle logic can be added here
