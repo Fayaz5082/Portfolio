@@ -1,54 +1,38 @@
-// Mobile Menu Toggle
-const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
+// Navigation active state on scroll
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.nav-links a');
 
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    const icon = hamburger.querySelector('i');
-    icon.classList.toggle('fa-bars');
-    icon.classList.toggle('fa-times');
-});
+window.onscroll = () => {
+    sections.forEach(sec => {
+        let top = window.scrollY;
+        let offset = sec.offsetTop - 150;
+        let height = sec.offsetHeight;
+        let id = sec.getAttribute('id');
 
-// Scroll Animation (Intersection Observer)
-const sections = document.querySelectorAll('.section');
-const observerOptions = { threshold: 0.2 };
-
-const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+        if(top >= offset && top < offset + height) {
+            navLinks.forEach(links => {
+                links.classList.remove('active');
+                document.querySelector('.nav-links a[href*=' + id + ']').classList.add('active');
+            });
         }
     });
-}, observerOptions);
+};
 
-sections.forEach(section => sectionObserver.observe(section));
+// Scroll Reveal Animations
+ScrollReveal({
+    distance: '80px',
+    duration: 2000,
+    delay: 200
+});
 
-// Testimonial Carousel logic
-let currentTestimonial = 0;
-const testimonials = document.querySelectorAll('.testimonial-card');
-const dots = document.querySelectorAll('.dot');
+ScrollReveal().reveal('.hero-content, .section-title', { origin: 'top' });
+ScrollReveal().reveal('.about-card, .timeline-item, .project-card', { origin: 'bottom' });
 
-function showTestimonial(index) {
-    testimonials.forEach(t => t.classList.remove('active'));
-    dots.forEach(d => d.classList.remove('active'));
-    
-    testimonials[index].classList.add('active');
-    dots[index].classList.add('active');
-}
+// Hamburger Menu Logic (Simplified)
+const hamburger = document.querySelector('.hamburger');
+const nav = document.querySelector('.nav-links');
 
-// Auto-rotate testimonials every 5 seconds
-setInterval(() => {
-    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-    showTestimonial(currentTestimonial);
-}, 5000);
-
-// Smooth scrolling for navigation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        navLinks.classList.remove('active'); // Close mobile menu on click
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
+hamburger.addEventListener('click', () => {
+    nav.classList.toggle('active');
+    // Add CSS for .nav-links.active to show a mobile menu
 });
