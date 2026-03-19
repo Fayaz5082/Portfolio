@@ -1,47 +1,47 @@
-// Mobile Navbar Toggle
-const hamburger = document.querySelector("#hamburger");
-const navLinks = document.querySelector("#nav-links");
+// Mobile Hamburger Menu
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
 
-hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
+hamburger.addEventListener('click', () => {
+    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    navLinks.style.flexDirection = 'column';
+    navLinks.style.position = 'absolute';
+    navLinks.style.top = '80px';
+    navLinks.style.left = '0';
+    navLinks.style.width = '100%';
+    navLinks.style.background = '#0a1d37';
+    navLinks.style.padding = '20px';
 });
 
-// Close menu when link is clicked
-document.querySelectorAll(".nav-links a").forEach(n => n.addEventListener("click", () => {
-    navLinks.classList.remove("active");
-}));
+// Testimonial Carousel
+let currentSlide = 0;
+const slides = document.querySelectorAll('.testimonial-slide');
 
-// Scroll Reveal Animation
-const observerOptions = {
-    threshold: 0.15
-};
+function showSlides() {
+    slides.forEach(slide => slide.classList.remove('active'));
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+}
+setInterval(showSlides, 4000);
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+// Smooth Scroll for Nav Links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Scroll Reveal Effect
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        if (sectionTop < window.innerHeight - 100) {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
         }
     });
-}, observerOptions);
-
-document.querySelectorAll('.section').forEach(section => {
-    observer.observe(section);
 });
-
-// Testimonial Carousel logic
-const inner = document.getElementById('carousel-inner');
-const items = document.querySelectorAll('.carousel-item');
-let index = 0;
-
-function showSlide(idx) {
-    if (idx >= items.length) index = 0;
-    else if (idx < 0) index = items.length - 1;
-    else index = idx;
-    inner.style.transform = `translateX(-${index * 100}%)`;
-}
-
-document.getElementById('nextBtn').addEventListener('click', () => showSlide(index + 1));
-document.getElementById('prevBtn').addEventListener('click', () => showSlide(index - 1));
-
-// Auto-slide every 5 seconds
-setInterval(() => showSlide(index + 1), 5000);
